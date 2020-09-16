@@ -1,6 +1,6 @@
 //
 //  Rectangle.swift
-//  RakuSwiftUI
+//  AltSwiftUI
 //
 //  Created by Wong, Kevin a on 2020/08/06.
 //  Copyright © 2020 Rakuten Travel. All rights reserved.

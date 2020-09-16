@@ -1,6 +1,6 @@
 //
 //  Circle.swift
-//  ios13test
+//  AltSwiftUI
 //
 //  Created by Nodehi, Jabbar on 2020/09/08.
 //  Copyright © 2020 Rakuten Travel. All rights reserved.
