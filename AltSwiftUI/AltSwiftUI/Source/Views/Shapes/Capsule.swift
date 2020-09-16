@@ -9,12 +9,12 @@
 import UIKit
 
 /// A view that represents a Capsule shape.
-public struct Capsule: View, Renderable {
+public struct Capsule: View, Renderable, shape {
     public var viewStore: ViewValues = ViewValues()
     
-    @State var fillColor = Color.clear
-    @State var strokeBorderColor = Color.clear
-    @State var lineWidth: CGFloat = 1
+    public var fillColor = Color.clear
+    public var strokeBorderColor = Color.clear
+    public var lineWidth: CGFloat = 1
 
     public var body: View {
         EmptyView()
@@ -26,7 +26,7 @@ public struct Capsule: View, Renderable {
         let width = context.viewValues?.viewDimensions?.width ?? .infinity
         let height = context.viewValues?.viewDimensions?.height ?? .infinity
         
-        let view = UIView()
+        let view = UIView().noAutoresizingMask()
         let capsule = UIView()
         
         let minDimensions = min(width, height)
@@ -42,20 +42,4 @@ public struct Capsule: View, Renderable {
     
     public func updateView(_ view: UIView, context: Context) {
     }
-    
-    /// Sets the fill color of a Capsule. Setting this value
-    /// is equavelent to setting the `background` property with
-    /// a color.
-    public func fill(_ color: Color) -> Self {
-        fillColor = color
-        return self
-    }
-    
-    /// Sets the stroke color and stroke width of a Capsule.
-    public func strokeBorder(_ color: Color, lineWidth: CGFloat = 1) -> Self {
-        strokeBorderColor = color
-        self.lineWidth = lineWidth
-        return self
-    }
-    
 }

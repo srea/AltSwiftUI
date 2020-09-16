@@ -9,12 +9,12 @@
 import UIKit
 
 /// A view that represents a Circle shape.
-public struct Circle: View, Renderable {
+public struct Circle: View, Renderable, shape {
     public var viewStore: ViewValues = ViewValues()
     
-    @State var fillColor = Color.clear
-    @State var strokeBorderColor = Color.clear
-    @State var lineWidth: CGFloat = 1
+    public var fillColor = Color.clear
+    public var strokeBorderColor = Color.clear
+    public var lineWidth: CGFloat = 1
     
     public var body: View {
         EmptyView()
@@ -26,7 +26,7 @@ public struct Circle: View, Renderable {
         let width = context.viewValues?.viewDimensions?.width ?? .infinity
         let height = context.viewValues?.viewDimensions?.height ?? .infinity
         
-        let view = UIView()
+        let view = UIView().noAutoresizingMask()
         let circle = UIView()
         
         let minDimensions = min(width, height)
@@ -43,20 +43,5 @@ public struct Circle: View, Renderable {
     }
     
     public func updateView(_ view: UIView, context: Context) {
-    }
-    
-    /// Sets the fill color of a Circle. Setting this value
-    /// is equavelent to setting the `background` property with
-    /// a color.
-    public func fill(_ color: Color) -> Self {
-        fillColor = color
-        return self
-    }
-    
-    /// Sets the stroke color and stroke width of a Circle.
-    public func strokeBorder(_ color: Color, lineWidth: CGFloat = 1) -> Self {
-        strokeBorderColor = color
-        self.lineWidth = lineWidth
-        return self
     }
 }

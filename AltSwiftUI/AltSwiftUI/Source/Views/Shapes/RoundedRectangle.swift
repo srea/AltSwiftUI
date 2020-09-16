@@ -9,12 +9,12 @@
 import UIKit
 
 /// A view that represents a RoundedRectangle shape.
-public struct RoundedRectangle: View, Renderable {
+public struct RoundedRectangle: View, Renderable, shape {
     public var viewStore: ViewValues = ViewValues()
     
-    @State var fillColor = Color.clear
-    @State var strokeBorderColor = Color.clear
-    @State var lineWidth: CGFloat = 1
+    public var fillColor = Color.clear
+    public var strokeBorderColor = Color.clear
+    public var lineWidth: CGFloat = 1
     
     public var body: View {
         EmptyView()
@@ -33,8 +33,8 @@ public struct RoundedRectangle: View, Renderable {
     
     
     public func createView(context: Context) -> UIView {
-        let view = UIView()
-        let roundedRectangle = UIView().noAutoresizingMask()
+        let view = UIView().noAutoresizingMask()
+        let roundedRectangle = UIView()
         
         roundedRectangle.layer.cornerRadius = cornerRadius
         roundedRectangle.layer.backgroundColor = fillColor.color.cgColor
@@ -46,20 +46,5 @@ public struct RoundedRectangle: View, Renderable {
     }
     
     public func updateView(_ view: UIView, context: Context) {
-    }
-    
-    /// Sets the fill color of a Rounded Rectangle. Setting this value
-    /// is equavelent to setting the `background` property with
-    /// a color.
-    public func fill(_ color: Color) -> Self {
-        fillColor = color
-        return self
-    }
-    
-    /// Sets the stroke color and stroke width of a Rounded Rectangle.
-    public func strokeBorder(_ color: Color, lineWidth: CGFloat = 1) -> Self {
-        strokeBorderColor = color
-        self.lineWidth = lineWidth
-        return self
     }
 }
