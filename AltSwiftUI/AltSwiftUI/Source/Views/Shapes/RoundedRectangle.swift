@@ -9,42 +9,46 @@
 import UIKit
 
 /// A view that represents a RoundedRectangle shape.
-public struct RoundedRectangle: View, Renderable, shape {
+public struct RoundedRectangle: shape {
     public var viewStore: ViewValues = ViewValues()
     
     public var fillColor = Color.clear
     public var strokeBorderColor = Color.clear
-    public var lineWidth: CGFloat = 1
+    public var style = StrokeStyle()
+    public var cornerRadius: CGFloat
     
     public var body: View {
         EmptyView()
     }
-    
-//    public var cornerSize: CGSize
-    public var cornerRadius: CGFloat
 
-    public var style: RoundedCornerStyle
-    
-    public init(cornerRadius: CGFloat, style: RoundedCornerStyle = .circular) {
+    public init(cornerRadius: CGFloat) {
         self.cornerRadius = cornerRadius
-        self.style = style
     }
     
-    
-    
     public func createView(context: Context) -> UIView {
-        let view = UIView().noAutoresizingMask()
-        let roundedRectangle = UIView()
-        
-        roundedRectangle.layer.cornerRadius = cornerRadius
-        roundedRectangle.layer.backgroundColor = fillColor.color.cgColor
-        roundedRectangle.layer.borderColor = strokeBorderColor.color.cgColor
-        roundedRectangle.layer.borderWidth = lineWidth
-        
-        view.addSubview(roundedRectangle)
+        let view = AltShapeView().noAutoresizingMask()
+        view.layer.addSublayer(view.caShapeLayer)
+        updateView(view, context: context)
         return view
     }
     
     public func updateView(_ view: UIView, context: Context) {
+        let width = context.viewValues?.viewDimensions?.width ?? .infinity
+        let height = context.viewValues?.viewDimensions?.height ?? .infinity
+        
+        if let view = view as? AltShapeView {
+            view.caShapeLayer.path = UIBezierPath(
+                roundedRect: CGRect(x: 0, y: 0, width: width, height: height),
+                cornerRadius: cornerRadius
+            ).cgPath
+            view.caShapeLayer.strokeColor = strokeBorderColor.color.cgColor
+            view.caShapeLayer.fillColor =  fillColor.color.cgColor
+            view.caShapeLayer.lineWidth = style.lineWidth
+            view.caShapeLayer.lineCap = lineCap(fromCGLineCap: style.lineCap)
+            view.caShapeLayer.lineJoin = lineJoin(fromCGLineCap: style.lineJoin)
+            view.caShapeLayer.miterLimit = style.miterLimit
+            view.caShapeLayer.lineDashPattern = style.dash.map {NSNumber(value: Float($0))}
+            view.caShapeLayer.lineDashPhase = style.dashPhase
+        }
     }
 }

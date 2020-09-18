@@ -9,12 +9,13 @@
 import UIKit
 
 /// A view that represents a Ellipse shape.
-public struct Ellipse: View, Renderable, shape {
+public struct Ellipse: shape {
+
     public var viewStore: ViewValues = ViewValues()
     
     public var fillColor = Color.clear
     public var strokeBorderColor = Color.clear
-    public var lineWidth: CGFloat = 1
+    public var style = StrokeStyle()
     
     public var body: View {
         EmptyView()
@@ -23,22 +24,26 @@ public struct Ellipse: View, Renderable, shape {
     public init() {}
     
     public func createView(context: Context) -> UIView {
-        let width = context.viewValues?.viewDimensions?.width ?? .infinity
-        let height = context.viewValues?.viewDimensions?.height ?? .infinity
-        
-        let view = UIView().noAutoresizingMask()
-        let shapeLayer = CAShapeLayer()
-
-        shapeLayer.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: width, height: height)).cgPath
-        shapeLayer.strokeColor = strokeBorderColor.color.cgColor
-        shapeLayer.fillColor = fillColor.color.cgColor
-        shapeLayer.lineWidth = lineWidth
-        shapeLayer.lineCap = .square
-        view.layer.addSublayer(shapeLayer)
-
+        let view = AltShapeView().noAutoresizingMask()
+        view.layer.addSublayer(view.caShapeLayer)
+        updateView(view, context: context)
         return view
     }
     
     public func updateView(_ view: UIView, context: Context) {
+        let width = context.viewValues?.viewDimensions?.width ?? .infinity
+        let height = context.viewValues?.viewDimensions?.height ?? .infinity
+        
+        if let view = view as? AltShapeView {
+            view.caShapeLayer.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: width, height: height)).cgPath
+            view.caShapeLayer.strokeColor = strokeBorderColor.color.cgColor
+            view.caShapeLayer.fillColor =  fillColor.color.cgColor
+            view.caShapeLayer.lineWidth = style.lineWidth
+            view.caShapeLayer.lineCap = lineCap(fromCGLineCap: style.lineCap)
+            view.caShapeLayer.lineJoin = lineJoin(fromCGLineCap: style.lineJoin)
+            view.caShapeLayer.miterLimit = style.miterLimit
+            view.caShapeLayer.lineDashPattern = style.dash.map {NSNumber(value: Float($0))}
+            view.caShapeLayer.lineDashPhase = style.dashPhase
+        }
     }
 }
