@@ -81,7 +81,7 @@ struct ExampleView: View {
 
 1. In order for the library to internally store generic properties of a view, you need to provide a `viewStore` property initialized with an empty `ViewValues` for each view you create.
 
-2. To target backwards compatibility, opaque return types (`some View`) which is supported from iOS 13 are not used. Instead, explicity return types are used.
+2. To target backwards compatibility, opaque return types (`some View`) which is supported from iOS 13 are not used. Instead, explicitly return types are used.
 
 ### State and Rendering
 
